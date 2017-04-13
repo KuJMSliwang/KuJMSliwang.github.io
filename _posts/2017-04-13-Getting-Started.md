@@ -7,4 +7,4 @@ pulished: true
 excerpt_separator: "```"
 ---
 
-# This is my first lot of blog posts, then I will update my slowly technology, ideas, and to summarize, work hard, 骚年
+This is my first lot of blog posts, then I will update my slowly technology, ideas,and to summarize, work hard, 骚年
