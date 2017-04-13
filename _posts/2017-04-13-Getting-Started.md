@@ -1,7 +1,7 @@
 ---
 layout: post_layout
 title: first lecture
-time: 2017年04月13日 星期四
+time: On Thursday, April 13, 2017
 location: 北京
 pulished: true
 excerpt_separator: "```"
