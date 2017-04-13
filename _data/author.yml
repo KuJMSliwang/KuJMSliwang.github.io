@@ -12,7 +12,21 @@ workHistory:
   title: java 开发工程师
   started: 2016
   duration: (2016.9 - Present)
-  description: 
+  description:
+- work3:
+  company: 软通动力信息技术有限公司
+  location: 中国，北京
+  title: java 开发工程师
+  started: 2016
+  duration: (2016.3 - 2016.9)
+  description:
+- work3:
+  company: 必联(北京)电子商务科技有限公司
+  location: 中国，北京
+  title: java 开发工程师
+  started: 2014
+  duration: (2014.11 - 2016.3)
+  description:
 
 
 educationHistory:
