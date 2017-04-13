@@ -2,7 +2,7 @@
 layout: post_layout
 title: first lecture
 time: On Thursday, April 13, 2017
-location: 北京
+location: BeiJing
 pulished: true
 excerpt_separator: "```"
 ---
