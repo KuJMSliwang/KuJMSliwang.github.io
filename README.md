@@ -2,4 +2,4 @@
 
 > 致正在奋斗的你
 
-![Blog](/assets/img/blog.png)
+![Blog](/assets/img/avatar.JPG)
