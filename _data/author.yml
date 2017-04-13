@@ -18,16 +18,18 @@ workHistory:
 educationHistory:
 - education1:
   organization: 吕梁学院
-  degree: 学士
+  degree: 本科/学士
   major: 计算机科学与技术
   started: 2013
   duration: (2013.9 - 2015.7)
   description: C/C++, Java, Linux, 培训
 - education2:
   organization: 太原电力高等专科学校
+  degree: 大专
   major: 计算机网络技术
   started: 2010
   duration: (2010.9 - 2013.7)
+  description: C/C++, Java, Linux, 培训
 languages:
 - language1:
   name: 中文
