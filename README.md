@@ -1,5 +1,5 @@
-# Kejin
+# KuJMSli wang
 
-> 自己选的路，跪着也要走下去
+> 致正在奋斗的你
 
 ![Blog](/assets/img/blog.png)
