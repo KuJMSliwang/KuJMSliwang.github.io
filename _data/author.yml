@@ -41,7 +41,28 @@ programmingSkills:
 - Java:
   name: Java
   percentage: 90%
-- Bash:
+- Mysql:
+  name: mysql
+  percentage: 90%
+- Linux:
   name: linux
   percentage: 80%
+- Solr:
+  name: solr
+  percentage: 80%
+- Linux:
+  name: linux
+  percentage: 80%
+- Redis:
+  name: redis
+  percentage: 80%
+- Maven:
+  name: maven
+  percentage: 80%
+- Git:
+  name: git/svn
+  percentage: 80%
+- Jenkins:
+  name: jenkins
+  percentage: 70%
 
