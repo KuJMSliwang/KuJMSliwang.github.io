@@ -58,9 +58,6 @@ programmingSkills:
 - Mysql:
   name: mysql
   percentage: 90%
-- Linux:
-  name: linux
-  percentage: 80%
 - Solr:
   name: solr
   percentage: 80%
