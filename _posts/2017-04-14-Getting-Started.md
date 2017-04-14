@@ -1,6 +1,6 @@
 ---
 layout: post_layout
-title: first lecture
+title: 项目总结
 time: On Thursday, April 14, 2017
 location: BeiJing
 pulished: true
@@ -8,7 +8,6 @@ excerpt_separator: "```"
 ---
 
 
-# 项目总结
 #### 项目计划开发时长：3.22-3.28 5天
 #### 项目实际完成时长：3.22-4.11 13天
 #### 里程碑：完成2017中国眼底病论坛的展示
