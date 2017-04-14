@@ -45,7 +45,12 @@ excerpt_separator: "```"
 在自测方面做的不够，没有做数据核实的事，认为这不是我要做的（心里认为自己检查自己的问题，查不出什么），在任务分配给我和开发同事一起核实时，才发现里面有好多问题，心里惭愧，自我测试很重要，下次一定重视
 ## 引发思考：
 #### 怎样的一个开发流程适合创业公司？
-未完待续...
+* [北京软件开发公司敏捷开发的6个实战经验](http://www.hivekion.com/news/2017/0219/155.html)
+* [北京软件开发公司项目管理体会](http://www.hivekion.com/news/wangluoyingxiao/2017/0304/169.html)
+* [北京软件开发公司告诉你七款敏捷开发工具](http://www.hivekion.com/news/wangluoyingxiao/2017/0307/170.html)
+* [北京软件开发公司软件测试教程](http://www.hivekion.com/news/changjianwenti/2017/0225/161.html)
+
+  未完待续...
 
 
 
