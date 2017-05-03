@@ -37,35 +37,35 @@ excerpt_separator: "```"
 List<QaUserTopic> list = JSONArray.toList(JSONArray.fromObject(answerJson), new QaUserTopic(), new JsonConfig());
 ```
 > * 4、sql语句里做了特殊处理，如下：
-```mybatis
+```java
 <insert id="batchInsert" parameterType="com.wsyk_oculist_web.bean.QaUserTopicBean">
-      insert into qa_user_topic
-      (uid, topic_id, answer_id, extend_answer)
-      values
-      <foreach collection="answerList" index="index" item="answer" separator=",">
-      (
-      #{answer.uid}, #{answer.topicId},
-      #{answer.answerId},
-      #{answer.extendAnswer}
-      )
-      </foreach>
+  insert into qa_user_topic
+  (uid, topic_id, answer_id, extend_answer)
+  values
+  <foreach collection="answerList" index="index" item="answer" separator=",">
+  (
+  #{answer.uid}, #{answer.topicId},
+  #{answer.answerId},
+  #{answer.extendAnswer}
+  )
+  </foreach>
   </insert>
-  ```
+```
 
 
 
 ##  项目总结（完成很顺利）
 
-- [ ] 前期准备工作挺足，在项目正式启动前，表已建好，数据也已导入
-- [ ] 提前有数据，后来改点数据，表基本没有太大变化，对接口的改动量来说很小
-- [ ] 前期分析好了工作量，项目也在已有的项目里直播开发，省去了因环境问题导致的时间延长
-- [ ] 功能短小精悍，好测试，容易找问题
-- [x] 拓展想法：这次开发很顺利，以后希望借鉴一下此次开发模式。之前开发的项目工期长，任务多，测试复杂。如下建议：
-- ①把每次的里程碑做一个修改，按功能划分里程碑，两周一个节点
-- ②每个里程碑都是功能模块，也就是说前后端要对接口，接口对完，所以里程碑的功能模块得看时长评估
-- ③做功能模块和时间划分时，在开会汇报前，希望团队内部做一次项目梳理，按开发甘特图来，此时可做修改
-- ④内部梳理越详细越好，一早上或者一下午（按之前两个月的工时算的话）
-- ⑤每个里程碑按上线的标准走，功能少，测试做足
-- ⑥需要整理一份上线的sop，上线前参照这个流程走，可以很好的预估时间和避免一些不必要的bug
+- 前期准备工作挺足，在项目正式启动前，表已建好，数据也已导入
+- 提前有数据，后来改点数据，表基本没有太大变化，对接口的改动量来说很小
+- 前期分析好了工作量，项目也在已有的项目里直播开发，省去了因环境问题导致的时间延长
+- 功能短小精悍，好测试，容易找问题
+- 拓展想法：这次开发很顺利，以后希望借鉴一下此次开发模式。之前开发的项目工期长，任务多，测试复杂。如下建议：
+    - ①把每次的里程碑做一个修改，按功能划分里程碑，两周一个节点
+    - ②每个里程碑都是功能模块，也就是说前后端要对接口，接口对完，所以里程碑的功能模块得看时长评估
+    - ③做功能模块和时间划分时，在开会汇报前，希望团队内部做一次项目梳理，按开发甘特图来，此时可做修改
+    - ④内部梳理越详细越好，一早上或者一下午（按之前两个月的工时算的话）
+    - ⑤每个里程碑按上线的标准走，功能少，测试做足
+    - ⑥需要整理一份上线的sop，上线前参照这个流程走，可以很好的预估时间和避免一些不必要的bug
 
 
