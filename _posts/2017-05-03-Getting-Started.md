@@ -36,7 +36,8 @@ excerpt_separator: "```"
 //json转化list对象
 List<QaUserTopic> list = JSONArray.toList(JSONArray.fromObject(answerJson), new QaUserTopic(), new JsonConfig());
 ```
-> * 4、sql语句里做了特殊处理，如下：
+> * 4、sql语句里做了特殊处理，如下
+
 ```java
 <insert id="batchInsert" parameterType="com.wsyk_oculist_web.bean.QaUserTopicBean">
   insert into qa_user_topic
