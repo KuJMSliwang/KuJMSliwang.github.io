@@ -1,7 +1,7 @@
 ---
 layout: post_layout
 title: 抽奖项目总结
-time: On Wednesday, May 4, 2017
+time: On Wednesday, May 3, 2017
 location: BeiJing
 pulished: true
 excerpt_separator: "```"
@@ -17,15 +17,11 @@ excerpt_separator: "```"
     - 2.2 查答题里有无该uid，无：返回您还未进行答题，请先答题
     - 2.3 查抽奖表里有无该uid，有：返回您已抽过奖，谢谢
 
-![cmd-markdown-logo](https://www.zybuluo.com/static/img/logo.png)
-
 抽奖逻辑（5%的中奖率，确保每20个人里中一个）
 
 > * 先生成一个幸运数字，在0-19之间产生，每20个人次循环一次
 > * 在这20个人次里，进来的人次数（对20求余）和幸运数字相等，则为中奖
 > * 将幸运数字存起来，每次都从库里查，确定重启tomcat时，幸运数字发生变化，来确保20人次必中一个
-
-![cmd-markdown-logo](https://www.zybuluo.com/static/img/logo.png)
 
 答题（批量插入）
 
@@ -54,7 +50,7 @@ List<QaUserTopic> list = JSONArray.toList(JSONArray.fromObject(answerJson), new 
   </insert>
 ```
 
-
+![cmd-markdown-logo](https://www.zybuluo.com/static/img/logo.png)
 
 ##  项目总结（完成很顺利）
 
