@@ -32,6 +32,7 @@ excerpt_separator: "```"
 > * 1、在批量插入前，不管有没有填写姓名，都要先添加用户（后面用来做用户是否答题的判断）
 > * 2、接受参数，需要前端组装json字符串
 > * 3、转化已建对象集合
+
 ```java
 //json转化list对象
 List<QaUserTopic> list = JSONArray.toList(JSONArray.fromObject(answerJson), new QaUserTopic(), new JsonConfig());
