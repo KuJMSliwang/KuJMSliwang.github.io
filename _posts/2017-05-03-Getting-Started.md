@@ -9,11 +9,13 @@ excerpt_separator: "```"
 
 
 抽奖前逻辑(两个模块)
-> * 1、更新用户手机号，填后才可抽奖
-> * 2、验证该手机号是否已被使用
-> * a、查用户表里有手机号，无：先填写手机号（根据uid找对应用户有没有手机号，以防用链接跳过a步骤）
-> * b、查答题里有无该uid，无：返回您还未进行答题，请先答题
-> * c、查抽奖表里有无该uid，有：返回您已抽过奖，谢谢
+- 模块1
+    - 1.1 更新用户手机号，填后才可抽奖
+    - 1.2 验证该手机号是否已被使用
+- 模块2
+    - 2.1 查用户表里有手机号，无：先填写手机号（根据uid找对应用户有没有手机号，以防用链接跳过a步骤）
+    - 2.2 查答题里有无该uid，无：返回您还未进行答题，请先答题
+    - 2.3 查抽奖表里有无该uid，有：返回您已抽过奖，谢谢
 
 ![cmd-markdown-logo](https://www.zybuluo.com/static/img/logo.png)
 
@@ -35,7 +37,7 @@ excerpt_separator: "```"
 List<QaUserTopic> list = JSONArray.toList(JSONArray.fromObject(answerJson), new QaUserTopic(), new JsonConfig());
 ```
 > * 4、sql语句里做了特殊处理，如下：
-```java
+```mybatis
 <insert id="batchInsert" parameterType="com.wsyk_oculist_web.bean.QaUserTopicBean">
       insert into qa_user_topic
       (uid, topic_id, answer_id, extend_answer)
@@ -48,7 +50,8 @@ List<QaUserTopic> list = JSONArray.toList(JSONArray.fromObject(answerJson), new 
       )
       </foreach>
   </insert>
-```
+  ```
+
 
 
 ##  项目总结（完成很顺利）
