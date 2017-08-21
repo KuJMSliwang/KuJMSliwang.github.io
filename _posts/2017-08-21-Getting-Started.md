@@ -14,8 +14,8 @@ excerpt_separator: "```"
     - ②jsonp只是get方式提交，即使写成post，也是get方式提交，这是jsonp内部机制的问题
     - ③后端处理：
 	不用@ResponseBody，采用post接收：method = RequestMethod.POST，
-	最后把json数据写出去：response.getWriter().write(json);
-前端处理：
+	最后把json数据写出去：response.getWriter().write(json);<br/>
+  前端处理：
 	ajax请求，post提交
     - ④传参：多个同类数据，传json数组串，后台用阿里巴巴的包转换
 List<ConCheckResultBean> checkResultList =
