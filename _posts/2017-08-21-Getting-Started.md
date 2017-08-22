@@ -15,9 +15,9 @@ excerpt_separator: "```"
     - ③后端处理：
     ```java
 	//不用@ResponseBody，采用post接收：
-	method = RequestMethod.POST，
+	method = RequestMethod.POST
 	//最后把json数据写出去：
-	response.getWriter().write(json);<br/>
+	response.getWriter().write(json);
 	```
   前端处理：
 	ajax请求，post提交
