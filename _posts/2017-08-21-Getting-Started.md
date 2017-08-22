@@ -24,4 +24,6 @@ com.alibaba.fastjson.JSONArray.parseArray(resultJson, ConCheckResultBean.class);
 - 2、注册总结（做了好多次，应该总结一下）
     - 注册后，把注册后的用户信息返回出去，以便直接登录使用
     - 注册步骤：①手机号、图片验证码、短信验证码、②用户信息完善 两个接口，一个是注册接口，一个是更新接口
+- 3、详情接口
+    - 进入详情，除了返回详情外，还要更新阅读数（错误犯了不止一次了）
 
