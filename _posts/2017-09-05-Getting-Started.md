@@ -19,12 +19,12 @@ RDS MySQL使用utf8mb4字符集存储emoji表情
     - RDS 实例配置
 -  通过 set names 命令设置会话字符集
 
-#基本原则
+# 基本原则
 
 如果要实现存储 emoji 表情到 RDS MySQL 实例，需要客户端、到 RDS MySQL 实例的连接、RDS 实例内部 3 个方面统一使用或者支持 utf8mb4 字符集。
 注：关于 utf8mb4 字符集，请参考 MySQL 官方文档
 
-#三个条件的说明
+# 三个条件的说明
 
 ## 应用客户端
 
@@ -34,20 +34,20 @@ RDS MySQL使用utf8mb4字符集存储emoji表情
 
 以常见的 JDBC 连接为例：
 
-- 对于 JDBC 连接，需要使用 MySQL Connector/J 5.1.13（含）以上的版本。
+对于 JDBC 连接，需要使用 MySQL Connector/J 5.1.13（含）以上的版本。
 
-- JDBC 的连接串中，建议不配置 characterEncoding 选项。
+JDBC 的连接串中，建议不配置 characterEncoding 选项。
 
 注：关于 MySQL Connector/J 5.1.13，请参考 MySQL 官方 Release Notes
 
 ## RDS 实例配置
 
-Step 1. 在控制台  参数配置 中修改 character_set_server 参数为 utf8mb4。
+### Step 1. 在控制台  参数配置 中修改 character_set_server 参数为 utf8mb4。
 
-Step 2. 设置库的字符集为 utf8mb4
+### Step 2. 设置库的字符集为 utf8mb4
 
 
-Step 3. 设置表的字符集为 utf8mb4
+### Step 3. 设置表的字符集为 utf8mb4
 
 # 通过 set names 命令设置会话字符集
 
