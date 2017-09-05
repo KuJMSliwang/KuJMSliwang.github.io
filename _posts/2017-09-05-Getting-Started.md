@@ -8,7 +8,7 @@ excerpt_separator: "```"
 ---
 
 
-<a href="https://help.aliyun.com/knowledge_detail/41702.html#RDS">MySQL使用utf8mb4字符集存储emoji表情</a>
+<a href="https://help.aliyun.com/knowledge_detail/41702.html#RDS">引用：MySQL使用utf8mb4字符集存储emoji表情</a>
 
 RDS MySQL使用utf8mb4字符集存储emoji表情
 
