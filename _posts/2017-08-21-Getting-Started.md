@@ -1,6 +1,6 @@
 ---
 layout: post_layout
-title: 会诊系统-分诊系统遇到的问题及解决方案
+title: his系统遇到的问题及解决方案
 time: On Monday, August 21, 2017
 location: BeiJing
 pulished: true
