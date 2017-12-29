@@ -1,7 +1,7 @@
 ---
 layout: post_layout
 title: 最近项目问题小总结
-time: On Tuesday, Sept 5, 2017
+time: On Thursday, December 21, 2017
 location: BeiJing
 pulished: true
 excerpt_separator: "```"
