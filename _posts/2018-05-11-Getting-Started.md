@@ -11,8 +11,7 @@ excerpt_separator: "```"
 原文：https://blog.csdn.net/sanyuesan0000/article/details/47060853
 
 mysql :
-
-[html] view plain copy
+```java
 select a.*   
 from  
 (  
@@ -20,11 +19,12 @@ select t1.*,(select count(*)+1 from 表 where 分组字段=t1.分组字段 and �
 from 表 t1  
 ) a  
 where a.group_id<=3  
-
+```
 oracle:
-[html] view plain copy
+```java
 SELECT t.*           
    FROM (SELECT ROW_NUMBER() OVER(PARTITION BY 分组字段 ORDER BY 排序字段 DESC) rn,           
          b.*           
          FROM 表 b) t           
   WHERE t.rn <= 3  ;  
+```
