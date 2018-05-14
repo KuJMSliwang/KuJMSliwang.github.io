@@ -24,10 +24,13 @@ excerpt_separator: "```"
 	* 文章id直接在栏目的下层
 * 3、如2中所举例子，url中不要出现项目名、类名等，结构：域名/栏目/文章
     * 解决方案：nginx解决
-    * 例子：location /jsy/{
+    * 例子：
+    	```java
+        location /jsy/{
             proxy_pass http://ip:端口号/项目名/类名/details/jsy/;
             proxy_redirect default;
         }
+        ```
     * 注意：location 后面要加“/”，不懂的需要单独学习下nginx配置
 * 4、后台有对应的文章、栏目管理，其中都要有加TDK（title、description、keywords）的地方
     * 规则：
