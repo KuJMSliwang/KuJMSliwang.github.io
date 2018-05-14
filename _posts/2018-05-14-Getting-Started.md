@@ -1,13 +1,13 @@
 ---
 layout: post_layout
-title: seo优化
+title: seo优化--干货！干货！干货！
 time: On Monday, May 14, 2018
 location: BeiJing
 pulished: true
 excerpt_separator: "```"
 ---
 
-## seo优化
+## seo优化--干货！干货！干货！
 
 * 1、网站所有的页面需要静态化，地址栏中不能出现“？、&、=”等符号
     * 解决方案：
