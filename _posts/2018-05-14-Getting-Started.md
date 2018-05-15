@@ -25,7 +25,7 @@ excerpt_separator: "```"
 * 3、如2中所举例子，url中不要出现项目名、类名等，结构：域名/栏目/文章
     * 解决方案：nginx解决
     * 例子：
-    	```java
+    	```
         location /jsy/{
             proxy_pass http://ip:端口号/项目名/类名/details/jsy/;
             proxy_redirect default;
