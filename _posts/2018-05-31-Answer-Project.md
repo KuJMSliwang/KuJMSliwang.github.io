@@ -1,7 +1,7 @@
 ---
 layout: post_layout
 title: 夭折的答题王--对战模块
-time: On Wednesday, May 30, 2018
+time: On Thursday, May 31, 2018
 location: BeiJing
 pulished: true
 excerpt_separator: "```"
@@ -46,7 +46,7 @@ excerpt_separator: "```"
     * 4、答题结束后，要请求答题情况接口（把用户答题情况记录下来，并清空用户和好友的题目key）
 
 * 三、答题时：（如何让对手知道你答的是什么）--和好友答题
-    * 1、在redis里，存key--value--ok
+    * 1、在redis里，存key--value
         * key：发起人+接受人+题目id
         * value：答题时间+回答id
     * 2、获取对手的答题情况--每秒请求一次
@@ -66,7 +66,7 @@ excerpt_separator: "```"
 
 * 五、对战完成时，加逻辑
     * 1、答题结束时请求--答题情况提交（分析数据）
-        * 之前逻辑上外加逻辑：ai不变；好友对战，把uid-waiting从redis里删除--ok
+        * 之前逻辑上外加逻辑：ai不变；好友对战，把uid-waiting从redis里删除
     * 2、结束对战--ai没有，好友对战中，答题完后有结束对战（返回到主页面）和继续对战（下面逻辑）
     * 3、继续对战
         * ai不变
