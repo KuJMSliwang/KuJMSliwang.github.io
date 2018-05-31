@@ -53,7 +53,7 @@ excerpt_separator: "```"
     	 * @return
     	 */
     	@ResponseBody
-            @RequestMapping(value = "/findTitlesFriend", method = RequestMethod.GET)
+        @RequestMapping(value = "/findTitlesFriend", method = RequestMethod.GET)
     	public String findTitlesFriend(Integer danId,Integer uid,Integer fid, HttpServletRequest request,HttpServletResponse response,String callback){
     		Result<Map<String, Object>> result = new Result<Map<String, Object>>();
     		//TODO 思路还需要更改，fid分享时是取不到的，可能取到昵称和图片，可用这来做key
