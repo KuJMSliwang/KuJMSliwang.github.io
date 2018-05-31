@@ -36,6 +36,7 @@ excerpt_separator: "```"
     * 5、请求查题时，要把和谁对战传过来判断
     * 6、好友点击链接，查题时，查找他们是不是好友，不是的话加好友
     * 7、代码（记录部分代码，重要是思路）
+    
     ```java
 
     	/**
@@ -52,7 +53,7 @@ excerpt_separator: "```"
     	 * @return
     	 */
     	@ResponseBody
-        @RequestMapping(value = "/findTitlesFriend", method = RequestMethod.GET)
+            @RequestMapping(value = "/findTitlesFriend", method = RequestMethod.GET)
     	public String findTitlesFriend(Integer danId,Integer uid,Integer fid, HttpServletRequest request,HttpServletResponse response,String callback){
     		Result<Map<String, Object>> result = new Result<Map<String, Object>>();
     		//TODO 思路还需要更改，fid分享时是取不到的，可能取到昵称和图片，可用这来做key
@@ -132,30 +133,30 @@ excerpt_separator: "```"
     		return callback;
     	}
 
-//*******************************************************************************************************
-    		/**
-        	 * 根据段位查出题目的id集合
-        	 * @param danId
-        	 * @return
-             */
-        	private List<Integer> initTitleList(Integer danId) {
-        		//TODO 1、查到分类题目,在redis里取出
-        		Map<String ,List<Integer>> titleMap = titleService.selectByDiff();
-        		List<Integer> simple = titleMap.get("simple");
-        		List<Integer> common = titleMap.get("common");
-        		List<Integer> difficult = titleMap.get("difficult");
+      /**
+       * 根据段位查出题目的id集合
+       * @param danId
+       * @return
+       */
+      private List<Integer> initTitleList(Integer danId) {
+         //TODO 1、查到分类题目,在redis里取出
+         Map<String ,List<Integer>> titleMap = titleService.selectByDiff();
+         List<Integer> simple = titleMap.get("simple");
+         List<Integer> common = titleMap.get("common");
+         List<Integer> difficult = titleMap.get("difficult");
 
-        		//TODO	2、按段位答题占比规则，随机出5个题目id，组成为id集合
-        		int titleNum[] = RuleUtil.calTitleNum(danId);
-        		simple = RuleUtil.randomList(simple,titleNum[0]);
-        		common =  RuleUtil.randomList(common,titleNum[1]);
-        		difficult =  RuleUtil.randomList(difficult,titleNum[2]);
+         //TODO	2、按段位答题占比规则，随机出5个题目id，组成为id集合
+         int titleNum[] = RuleUtil.calTitleNum(danId);
+         simple = RuleUtil.randomList(simple,titleNum[0]);
+         common =  RuleUtil.randomList(common,titleNum[1]);
+         difficult =  RuleUtil.randomList(difficult,titleNum[2]);
 
-        		//组合为一个id集合，共5道题
-        		simple.addAll(common);
-        		simple.addAll(difficult);
-        		return simple;
-        	}
+         //组合为一个id集合，共5道题
+         simple.addAll(common);
+         simple.addAll(difficult);
+         return simple;
+      }
+         
     ```
 
 * 二、查出题精准分配：
