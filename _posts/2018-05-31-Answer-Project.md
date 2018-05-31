@@ -35,6 +35,126 @@ excerpt_separator: "```"
     * 4、如果是AI的话，查出AI答题时间范围，AI答错题的数量，在id集合里随机出来，告诉前端这几个题是答错的，选哪个由前端随机控制
     * 5、请求查题时，要把和谁对战传过来判断
     * 6、好友点击链接，查题时，查找他们是不是好友，不是的话加好友
+    * 7、代码（记录部分代码，重要是思路）
+    ```java
+    	/**
+    	 *
+    	 * <p>Title: 查找题目--和好友对战--好友的请求题目</p>
+    	 * <p>Description:逻辑太多，需要把好友和AI 的分开写，不然接口太大
+    	 * 新加逻辑：
+    	 * 1、如果好友是第一次，需要走首页逻辑
+    	 * 2、如果是好友对战，先从redis 中取对战信息，处于等待中即可对战，状态置为对战中
+    	 * </p>
+    	 * @param request
+    	 * @param response
+    	 * @param callback
+    	 * @return
+    	 */
+    	@ResponseBody
+        @RequestMapping(value = "/findTitlesFriend", method = RequestMethod.GET)
+    	public String findTitlesFriend(Integer danId,Integer uid,Integer fid, HttpServletRequest request,HttpServletResponse response,String callback){
+    		Result<Map<String, Object>> result = new Result<Map<String, Object>>();
+    		//TODO 思路还需要更改，fid分享时是取不到的，可能取到昵称和图片，可用这来做key
+    		try{
+    			if (danId==null || uid==null){
+    				result.setMsg("传参问题");
+    				result.setSuccess(false);
+    				result.setCode(1);
+    			}else{
+    				Map<String, Object> map = new HashMap<String, Object>();
+
+    //				TODO 3、把题目查出来，id集合
+    				List<TitleBean> titleList = null;
+    				//TODO 如果是好友对战，先从redis 中取对战信息，处于等待中即可对战，状态置为对战中
+    				String key2 = uid+"-waiting";
+    				Object o =  redis.read(key2);
+    				Integer fight = null;
+    				if (o!=null)
+    					fight = Integer.parseInt( o.toString());
+    				if (fight==null){
+    					result.setMsg("此链接已失效");
+    					result.setSuccess(false);
+    					result.setCode(3);
+    				}else if (fight!=0){
+    					result.setMsg("好友正在对战...");
+    					result.setSuccess(false);
+    					result.setCode(2);
+    				}else {
+    					redis.save(fid,key2);//状态置为fid，正在对战
+    					//TODO 如果是好友对战的话，需要把uid传过来，存入redis中 key:发起人+接收人
+    					//********************做的时候再看看逻辑是否有问题************
+    					String key = uid+"-"+fid+"-title";
+    					titleList = (List<TitleBean>) redis.read(key);
+
+    					if (titleList==null){
+    						//算出5道题的id
+    						List<Integer> simple = initTitleList(danId);
+    						//查出数据后放入缓存
+    						titleList=titleService.selectTitleList(simple);
+    						redis.save(titleList,key);
+    					}
+    					//成功加入对战时，互相加好友
+    					FriendRel param = new FriendRel();
+    					param.setUid(uid);
+    					param.setFid(fid);
+    					FriendRel rel = friendRelService.selectByRel(param);
+    					if (rel==null){
+    						//不是好友，加为好友
+    						friendRelService.addRel(param);
+    					}
+
+    					//查出用户的连胜次数
+    					UserExtendBean userDetail = userService.selectByUid(uid);
+
+    					map.put("userDetail",userDetail);
+    					map.put("titleList",titleList);
+
+    					result.setData(map);
+    					result.setMsg("成功");
+    					result.setSuccess(true);
+    					result.setCode(0);
+    				}
+    			}
+
+    		}catch(Exception e){
+    			e.printStackTrace() ;
+    			result.setMsg("失败");
+    			result.setSuccess(false);
+    			result.setCode(1);
+    		}finally{
+    			if(StringUtil.isEmpty(callback)){
+    				callback = JsonUtil.toJson(result);
+    			}else{
+    				callback = callback+"("+JsonUtil.toJson(result)+")";
+    			}
+    		}
+    		return callback;
+    	}
+
+    		/**
+        	 * 根据段位查出题目的id集合
+        	 * @param danId
+        	 * @return
+             */
+        	private List<Integer> initTitleList(Integer danId) {
+        		//TODO 1、查到分类题目,在redis里取出
+        		Map<String ,List<Integer>> titleMap = titleService.selectByDiff();
+        		List<Integer> simple = titleMap.get("simple");
+        		List<Integer> common = titleMap.get("common");
+        		List<Integer> difficult = titleMap.get("difficult");
+
+        		//TODO	2、按段位答题占比规则，随机出5个题目id，组成为id集合
+        		int titleNum[] = RuleUtil.calTitleNum(danId);
+        		simple = RuleUtil.randomList(simple,titleNum[0]);
+        		common =  RuleUtil.randomList(common,titleNum[1]);
+        		difficult =  RuleUtil.randomList(difficult,titleNum[2]);
+
+        		//组合为一个id集合，共5道题
+        		simple.addAll(common);
+        		simple.addAll(difficult);
+        		return simple;
+        	}
+    ```
 
 * 二、查出题精准分配：
     * 1、如果是和AI对战的话，请求时直接返回题目就行，不用存redis里了，因为AI的答题时间和哪些答错都返回了
@@ -77,4 +197,7 @@ excerpt_separator: "```"
 * 六、添加好友时思路：
     * 1、之前想过好友只加一条记录就算好友，但这样查询好友时一点都不方便，查询是否是好友时，还需要or来查询，这样效率很低
     * 2、换一种，只要是加好友，就直接加两条，在事务里，查的时候，也就方便多了
+
+
+
 
