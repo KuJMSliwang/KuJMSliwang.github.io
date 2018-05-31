@@ -40,17 +40,12 @@ excerpt_separator: "```"
     ```java
 
     	/**
-    	 *
     	 * <p>Title: 查找题目--和好友对战--好友的请求题目</p>
     	 * <p>Description:逻辑太多，需要把好友和AI 的分开写，不然接口太大
     	 * 新加逻辑：
     	 * 1、如果好友是第一次，需要走首页逻辑
     	 * 2、如果是好友对战，先从redis 中取对战信息，处于等待中即可对战，状态置为对战中
     	 * </p>
-    	 * @param request
-    	 * @param response
-    	 * @param callback
-    	 * @return
     	 */
     	@ResponseBody
         @RequestMapping(value = "/findTitlesFriend", method = RequestMethod.GET)
@@ -135,8 +130,6 @@ excerpt_separator: "```"
 
       /**
        * 根据段位查出题目的id集合
-       * @param danId
-       * @return
        */
       private List<Integer> initTitleList(Integer danId) {
          //TODO 1、查到分类题目,在redis里取出
@@ -167,6 +160,88 @@ excerpt_separator: "```"
         * value：查出的题目
     * 3、当好友接受时，再请求查题，这样可防止邀请了之后，好友没接受在redis里产生的垃圾数据，前端每秒请求一次（判断有无uid确定是否是第一次进入，第一次登录进来，请求首页接口）
     * 4、答题结束后，要请求答题情况接口（把用户答题情况记录下来，并清空用户和好友的题目key）
+    * 5、代码（记录部分代码）
+
+    ```java
+
+    	/**
+    	 * <p>Title: 查找题目--和好友对战--自己的请求题目</p>
+    	 */
+    	@ResponseBody
+    	@RequestMapping(value = "/findTitlesMe", method = RequestMethod.GET)
+    	public String findTitlesMe(Integer uid, HttpServletRequest request,HttpServletResponse response,String callback){
+    		Result<Map<String, Object>> result = new Result<Map<String, Object>>();
+    		//TODO 思路还需要更改，fid分享时是取不到的，可能取到昵称和图片，可用这来做key
+    		try{
+    			if ( uid==null){
+    				result.setMsg("传参问题");
+    				result.setSuccess(false);
+    				result.setCode(1);
+    			}else{
+    				Map<String, Object> map = new HashMap<String, Object>();
+
+    //				TODO 3、把题目查出来，id集合
+    				List<TitleBean> titleList = null;
+    				//TODO 如果是好友对战，先从redis 中取对战信息，处于等待中即可对战，状态置为对战中
+    				String key2 = uid+"-waiting";
+    				Object o = redis.read(key2);
+    				Integer fight = null;
+    				if (o!=null)
+    					fight = Integer.parseInt( o.toString());
+    				if (fight==null){
+    					//如果还没等待，在redis加入等待信号
+    					redis.save(0,key2);
+    					result.setMsg("继续等待...");
+    					result.setSuccess(false);
+    					result.setCode(2);
+    				}else if (fight==0){
+    					result.setMsg("继续等待...");
+    					result.setSuccess(false);
+    					result.setCode(2);
+    				}else {
+    					Integer fid = fight;//fight里有值时，就是fid
+    					//TODO 如果是好友对战的话，需要把uid传过来，存入redis中 key:发起人+接收人
+    					//********************做的时候再看看逻辑是否有问题************
+    					String key = uid+"-"+fid+"-title";
+    					titleList = (List<TitleBean>) redis.read(key);
+
+    					if (titleList==null){
+    						// redis服务挂了的可能性很小，因为挂了上面就请求失败了
+    						result.setMsg("该题目已请求过，请勿重复使用...");
+    						result.setSuccess(false);
+    						result.setCode(3);
+    					}else {
+    						//题目使用过一次后清除
+    						redis.delete(key);
+    						//查出用户的连胜次数
+    						UserExtendBean userDetail = userService.selectByUid(uid);
+
+    						map.put("userDetail",userDetail);
+    						map.put("titleList",titleList);
+
+    						result.setData(map);
+    						result.setMsg("成功");
+    						result.setSuccess(true);
+    						result.setCode(0);
+    					}
+    				}
+    			}
+
+    		}catch(Exception e){
+    			e.printStackTrace() ;
+    			result.setMsg("失败");
+    			result.setSuccess(false);
+    			result.setCode(1);
+    		}finally{
+    			if(StringUtil.isEmpty(callback)){
+    				callback = JsonUtil.toJson(result);
+    			}else{
+    				callback = callback+"("+JsonUtil.toJson(result)+")";
+    			}
+    		}
+    		return callback;
+    	}
+    ```
 
 * 三、答题时：（如何让对手知道你答的是什么）--和好友答题
     * 1、在redis里，存key--value
@@ -177,6 +252,96 @@ excerpt_separator: "```"
     * 3、和AI答题
         * 自己答就行，前端计算
         * AI答题情况，在返回题目时就已经给出了，由前端判断
+    * 4、代码（部分代码）
+
+    ```java
+
+    	/**
+    	 * <p>Title: 和好友对战时答题</p>
+    	 */
+    	@ResponseBody
+    	@RequestMapping(value = "/answerFriend", method = RequestMethod.GET)
+    	public String answerFriend(Integer uid, Integer fid, AnswerBean param, HttpServletRequest request, HttpServletResponse response, String callback){
+    		Result<Map<String, Object>> result = new Result<Map<String, Object>>();
+    		try{
+    //			key：发起人+接受人+题目id
+    //			value：答题时间+回答id
+    			if(uid==null || fid==null || param.getTid()==null
+    					||param.getAnswerId()==null || param.getTime()==null){
+    				result.setMsg("传参问题");
+    				result.setSuccess(false);
+    				result.setCode(1);
+    			}else {
+    				String key = uid+"-"+fid+"-"+param.getTid();
+    				//就存10秒
+    				redis.saveAndTimeout(param,key,10);
+    				result.setMsg("成功");
+    				result.setSuccess(true);
+    				result.setCode(0);
+    			}
+
+    		}catch(Exception e){
+    			e.printStackTrace() ;
+    			result.setMsg("失败");
+    			result.setSuccess(false);
+    			result.setCode(1);
+    		}finally{
+    			if(StringUtil.isEmpty(callback)){
+    				callback = JsonUtil.toJson(result);
+    			}else{
+    				callback = callback+"("+JsonUtil.toJson(result)+")";
+    			}
+    		}
+    		return callback;
+    	}
+
+    	/**
+    	 * <p>Title: 和好友对战时获取好友答题情况--前端每秒请求一次</p>
+    	 */
+    	@ResponseBody
+    	@RequestMapping(value = "/getFriendAnswer", method = RequestMethod.GET)
+    	public String getFriendAnswer(Integer uid, Integer fid, AnswerBean param, HttpServletRequest request, HttpServletResponse response, String callback){
+    		Result<Map<String, Object>> result = new Result<Map<String, Object>>();
+    		try{
+    //			key：接受人+发起人+题目id key返过来了
+    //			value：答题时间+回答id
+    			if(uid==null || fid==null || param.getTid()==null){
+    				result.setMsg("传参问题");
+    				result.setSuccess(false);
+    				result.setCode(1);
+    			}else {
+    				Map<String, Object> map = new HashMap<String, Object>();
+    				String key = fid+"-"+uid+"-"+param.getTid();
+    				AnswerBean answerBean = (AnswerBean) redis.read(key);
+    				if (answerBean==null){
+    					result.setMsg("好友还未作答");
+    					result.setSuccess(false);
+    					result.setCode(2);
+    				}else {
+    					map.put("answerBean",answerBean);
+
+    					result.setData(map);
+    					result.setMsg("成功");
+    					result.setSuccess(true);
+    					result.setCode(0);
+    				}
+    			}
+
+    		}catch(Exception e){
+    			e.printStackTrace() ;
+    			result.setMsg("失败");
+    			result.setSuccess(false);
+    			result.setCode(1);
+    		}finally{
+    			if(StringUtil.isEmpty(callback)){
+    				callback = JsonUtil.toJson(result);
+    			}else{
+    				callback = callback+"("+JsonUtil.toJson(result)+")";
+    			}
+    		}
+    		return callback;
+    	}
+    ```
 
 * 四、和好友对战前建立等待关系
     * 1、uid-waiting作为key，value=0，放入redis中，分享了好多链接，谁点了就和谁对战，只能和一人对战
@@ -186,6 +351,7 @@ excerpt_separator: "```"
         * 3）为0好友加入对战，此时好友已有fid(好友id)，uid-waiting的value置为1，返回成功，此时可以请求好友对战的题目了(这就可以满足好友先请求题目了)
     * 3、好友第一次进入（需要得到openid来判断），走首页里的入库逻辑，前端不用弹出奖励了，默默加上就ok了
         * 走首页接口，会得到uid，存起来，下次请求对战链接时，按fid(好友id)参数传入即可
+    * 4、代码（建立关系，在上面的代码中已经有了，分点解释，比较清楚）
 
 * 五、对战完成时，加逻辑
     * 1、答题结束时请求--答题情况提交（分析数据）
@@ -196,10 +362,94 @@ excerpt_separator: "```"
         * 好友：等待（点击继续对战）和加入的过程
         * 点击继续对战的人，变为主动者uid，好友fid----请求我的题目
         * 加入的人----请求好友的题目
+    * 4、代码（部分代码）
+
+    ```java
+
+    	/**
+    	 * <p>Title: 对战完成时请求--对战结束</p>
+    	 */
+    	@Transactional
+    	@RequestMapping(value = "/finishAnswer")
+    	public void finishAnswer(Integer uid,Integer flag,String analysisJson, HttpServletRequest request,HttpServletResponse response,String callback) throws IOException {
+    		//flag是否为胜0否1是
+    		response.setHeader("Access-Control-Allow-Origin", "*");
+    		Result<Map<String, Object>> result = new Result<Map<String, Object>>();
+    		try{
+    			// TODO 批量保存
+    			if(uid==null || flag==null || StringUtil.isEmpty(analysisJson)){
+
+    				result.setMsg("传参问题");
+    				result.setSuccess(false);
+    				result.setCode(1);
+    			}else{
+    //				删除好友的等待信号,AI也不影响
+    				redis.delete(uid+"-waiting");
+
+    				List<Analysis> analysisList = JSONArray.toList(
+    						JSONArray.fromObject(analysisJson),
+    						new Analysis(), new JsonConfig());
+    				for (Analysis analysis : analysisList) {
+    					analysis.setCreateTime(new Date());
+    				}
+    				//按uid把用户的答题占比查出
+    				//没有--添加，有--传过来的封装到查出来的数据里，相加，去除没有传过来的Cid（它们不需要更新）
+    				List<AnalysisBean> kuAnalysisList = analysisService.selectByUid(uid);
+    				if (CollectionUtils.isEmpty(kuAnalysisList)){
+    					//批量添加
+    					analysisService.batchAdd(analysisList);
+    				}else {
+    					//封装、相加、map去重逻辑
+    					Map<Integer,Analysis> analysisMap = new HashMap<Integer, Analysis>();
+    					for (Analysis a:kuAnalysisList) {
+    						analysisMap.put(a.getCid(),a);
+    					}
+    					for (Analysis a:analysisList) {
+    						Analysis map_a = analysisMap.get(a.getCid());
+    						a.setCreateTime(map_a.getCreateTime());
+    						a.setUid(map_a.getUid());
+    						a.setId(map_a.getId());
+    						a.setCorrectCount(a.getCorrectCount()+map_a.getCorrectCount());
+    						a.setTotalCount(a.getTotalCount()+map_a.getTotalCount());
+    					}
+    					//批量更新
+    					analysisService.batchUpdate(analysisList);
+
+    					//是否为胜 flag=0否 1是  -- 更新用户的连胜次数
+    					UserExtendBean user = userService.selectByUid(uid);
+    					int winning = 0;
+    					if (flag==1){
+    						winning = user.getWinning()+1;
+    					}
+    					user.setWinning(winning);
+    					userService.updateDetail(user);
+    				}
+
+    				result.setMsg("成功");
+    				result.setCode(0);
+    				result.setSuccess(true);
+    			}
+
+    		}catch(Exception e){
+    			e.printStackTrace() ;
+    			result.setMsg("失败");
+    			result.setSuccess(false);
+    			result.setCode(1);
+    		}finally{
+    			if(StringUtil.isEmpty(callback)){
+    				callback = JsonUtil.toJson(result).toString();
+    			}else{
+    				callback = callback+"("+JsonUtil.toJson(result).toString()+")";
+    			}
+    			response.getWriter().write(callback);
+    		}
+    	}
+    ```
 
 * 六、添加好友时思路：
     * 1、之前想过好友只加一条记录就算好友，但这样查询好友时一点都不方便，查询是否是好友时，还需要or来查询，这样效率很低
     * 2、换一种，只要是加好友，就直接加两条，在事务里，查的时候，也就方便多了
+    * 3、代码（加好友逻辑，在查找题目的逻辑时就加上了，分点思路清晰）
 
 
 
