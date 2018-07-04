@@ -34,7 +34,7 @@ excerpt_separator: "```"
 	* 安装完成后，在前往--应用程序下：
 ￼
 
-* 三、运行FinalShell
+* 运行FinalShell
 
 	* 双击FinalShell运行，跳出对话框要求你输入密码，自动调用Java支持，等软件打开后，新增SSH连接：
 
