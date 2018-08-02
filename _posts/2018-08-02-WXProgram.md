@@ -1,13 +1,13 @@
 ---
 layout: post_layout
-title: 小程序开发时的问题总结
+title: 微信小程序开发时的问题总结
 time: On Thursday, Aug 2, 2018
 location: BeiJing
 pulished: true
 excerpt_separator: "```"
 ---
 
-#### 小程序开发时的问题总结
+#### 微信小程序开发时的问题总结
 
 * 后台准备工作：
 	* 1、需要遵循https协议（文章最后给出阿里云的文档）
