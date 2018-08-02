@@ -76,8 +76,8 @@ excerpt_separator: "```"
 		```
 
 		* ( 3 ) 将其修改为 (以下属性中ssl开头的属性与证书配置有直接关系，其它属性请结合自己的实际情况复制或调整) :
-		```java
 		
+		```java
 		server {
 		    listen 443;
 		    server_name localhost;
@@ -119,20 +119,20 @@ excerpt_separator: "```"
 
 			* 找到安装Tomcat目录下该文件server.xml,一般默认路径都是在 conf 文件夹中。找到 &lt;Connection port="8443"标签，增加如下属性：keystoreFile="cert/214520393250244.pfx" keystoreType="PKCS12" 此处的证书密码，请参考附件中的密码文件或在第1步中设置的密码 keystorePass="证书密码" 完整的配置如下，其中port属性根据实际情况修改：
 
-```java
-<Connector port="8443"
-    protocol="HTTP/1.1"
-    SSLEnabled="true"
-    scheme="https"
-    secure="true"
-    keystoreFile="cert/214520393250244.pfx"
-    keystoreType="PKCS12"
-    keystorePass="证书密码"
-    clientAuth="false"
-    SSLProtocol="TLSv1+TLSv1.1+TLSv1.2"
-    ciphers="TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_256_CBC_SHA256"/>
-    
- ```
+			```java
+			<Connector port="8443"
+			    protocol="HTTP/1.1"
+			    SSLEnabled="true"
+			    scheme="https"
+			    secure="true"
+			    keystoreFile="cert/214520393250244.pfx"
+			    keystoreType="PKCS12"
+			    keystorePass="证书密码"
+			    clientAuth="false"
+			    SSLProtocol="TLSv1+TLSv1.1+TLSv1.2"
+			    ciphers="TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_256_CBC_SHA256"/>
+
+			 ```
  
 		* 3、JKS证书安装(帮助)
 
@@ -146,19 +146,19 @@ keystoreFile="cert/your-name.jks"
 keystorePass="证书密码"
 完整的配置如下，其中port属性根据实际情况修改：
 
-```java
-<Connector port="8443"
-    protocol="HTTP/1.1"
-    SSLEnabled="true"
-    scheme="https"
-    secure="true"
-    keystoreFile="cert/your-name.jks"
-    keystorePass="证书密码"
-    clientAuth="false"
-    SSLProtocol="TLSv1+TLSv1.1+TLSv1.2"
-    ciphers="TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_256_CBC_SHA256"/>
-    
-```
+			```java
+			<Connector port="8443"
+			    protocol="HTTP/1.1"
+			    SSLEnabled="true"
+			    scheme="https"
+			    secure="true"
+			    keystoreFile="cert/your-name.jks"
+			    keystorePass="证书密码"
+			    clientAuth="false"
+			    SSLProtocol="TLSv1+TLSv1.1+TLSv1.2"
+			    ciphers="TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_256_CBC_SHA256"/>
+
+			```
 
 ( 注意:不要直接拷贝所有配置，只需添加 keystoreFile,keystorePass等参数即可，其它参数请根据自己的实际情况修改 )
 
