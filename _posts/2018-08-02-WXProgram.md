@@ -138,13 +138,9 @@ excerpt_separator: "```"
 
 			* ( 1 ) 使用java jdk将PFX格式证书转换为JKS格式证书(windows环境注意在%JAVA_HOME%/jdk/bin目录下执行)
 
-keytool -importkeystore -srckeystore 214520393250244.pfx -destkeystore your-name.jks -srcstoretype PKCS12 -deststoretype JKS
-回车后输入JKS证书密码和PFX证书密码，强烈推荐将JKS密码与PFX证书密码相同，否则可能会导致Tomcat启动失败。
-			* ( 2 ) 找到安装 Tomcat 目录下该文件Server.xml，一般默认路径都是在 conf 文件夹中。找到 &lt;Connection port="8443"标签，增加如下属性：
-
-keystoreFile="cert/your-name.jks"
-keystorePass="证书密码"
-完整的配置如下，其中port属性根据实际情况修改：
+			* keytool -importkeystore -srckeystore 214520393250244.pfx -destkeystore your-name.jks -srcstoretype PKCS12 -deststoretype JKS
+			* 回车后输入JKS证书密码和PFX证书密码，强烈推荐将JKS密码与PFX证书密码相同，否则可能会导致Tomcat启动失败。
+			* ( 2 ) 找到安装 Tomcat 目录下该文件Server.xml，一般默认路径都是在 conf 文件夹中。找到 &lt;Connection port="8443"标签，增加如下属性：keystoreFile="cert/your-name.jks" keystorePass="证书密码" 完整的配置如下，其中port属性根据实际情况修改：
 
 			```java
 			<Connector port="8443"
@@ -158,9 +154,10 @@ keystorePass="证书密码"
 			    SSLProtocol="TLSv1+TLSv1.1+TLSv1.2"
 			    ciphers="TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_256_CBC_SHA256"/>
 
-			```
+			
 
-( 注意:不要直接拷贝所有配置，只需添加 keystoreFile,keystorePass等参数即可，其它参数请根据自己的实际情况修改 )
+			( 注意:不要直接拷贝所有配置，只需添加 keystoreFile,keystorePass等参数即可，其它参数请根据自己的实际情况修改 )
+			```
 
 		* 4、 重启 Tomcat。
 
