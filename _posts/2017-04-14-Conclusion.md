@@ -1,6 +1,6 @@
 ---
 layout: post_layout
-title: 项目总结
+title: Retina China 2017项目总结
 time: On Thursday, April 14, 2017
 location: BeiJing
 pulished: true
