@@ -37,6 +37,7 @@ excerpt_separator: "```"
 			* 1、获取ticket时，注意后面的type参数，给jsapi值。还有个卡卷支付获取，也是同样的接口，只是type值不一样
 			* 2、注意noncestr属性，后台给时是全小写，前端要用nonceStr属性来接收（这应该是微信团队的问题）
 			* 3、文档里有提到，accessToken、ticket要放缓存里，不然请求太频繁会有问题
+			* 4、前端需要用js获取当前页面除去'#'hash部分的链接（可用location.href.split('#')[0]获取,而且需要encodeURIComponent），后端需要  url = URLDecoder.decode(url, "UTF-8")
 
 
 
